@@ -3,11 +3,11 @@
 import { useState } from 'react';
 
 const creatures = [
-  { name: '月夜のフクロウ × シダ植物', type: '神秘タイプ', habitat: '深い霧の森の奥深く', desc: 'マイペースで直感力が鋭く、夜になると知恵が冴え渡るタイプ。', color: 'from-indigo-900 via-purple-900 to-slate-900' },
-  { name: 'ひまわりを纏うカマキリ', type: '情熱タイプ', habitat: '真夏のまばゆい草原', desc: '集中力抜群で、狙った獲物（目標）を絶対に逃さないハンター気質。', color: 'from-amber-800 via-orange-900 to-slate-900' },
-  { name: '深海のオオクラゲ × 水草', type: '癒やしタイプ', habitat: '光の届かない青い海中', desc: '周囲を穏やかな空気で包み込む。マイペースすぎてたまに心配される。', color: 'from-blue-900 via-teal-900 to-slate-900' },
-  { name: '桜の木に宿るリス', type: '春爛漫タイプ', habitat: '満開の桜並木', desc: '楽しいことが大好きで、周りの人たちに笑顔と幸せを運ぶムードメーカー。', color: 'from-rose-900 via-pink-900 to-slate-900' },
-  { name: 'サボテンのトゲを宿すトカゲ', type: '忍耐・孤高タイプ', habitat: '灼熱の砂漠地帯', desc: '逆境にめちゃくちゃ強く、どんな困難も独自のクールな方法で乗り切る。', color: 'from-emerald-900 via-yellow-900 to-slate-900' },
+  { name: '月夜のフクロウ × シダ植物', type: '神秘タイプ', habitat: '深い霧の森の奥深く', desc: 'マイペースで直感力が鋭く、夜になると知恵が冴え渡るタイプ。', color: 'from-indigo-600 via-purple-600 to-slate-900', glow: 'shadow-purple-500/50' },
+  { name: 'ひまわりを纏うカマキリ', type: '情熱タイプ', habitat: '真夏のまばゆい草原', desc: '集中力抜群で、狙った獲物（目標）を絶対に逃さないハンター気質。', color: 'from-amber-600 via-orange-600 to-slate-900', glow: 'shadow-orange-500/50' },
+  { name: '深海のオオクラゲ × 水草', type: '癒やしタイプ', habitat: '光の届かない青い海中', desc: '周囲を穏やかな空気で包み込む。マイペースすぎてたまに心配される。', color: 'from-blue-600 via-teal-600 to-slate-900', glow: 'shadow-blue-500/50' },
+  { name: '桜の木に宿るリス', type: '春爛漫タイプ', habitat: '満開の桜並木', desc: '楽しいことが大好きで、周りの人たちに笑顔と幸せを運ぶムードメーカー。', color: 'from-rose-600 via-pink-600 to-slate-900', glow: 'shadow-pink-500/50' },
+  { name: 'サボテンのトゲを宿すトカゲ', type: '忍耐・孤高タイプ', habitat: '灼熱の砂漠地帯', desc: '逆境にめちゃくちゃ強く、どんな困難も独自のクールな方法で乗り切る。', color: 'from-emerald-600 via-teal-700 to-slate-900', glow: 'shadow-emerald-500/50' },
 ];
 
 export default function CreatureFortuneApp() {
@@ -25,66 +25,74 @@ export default function CreatureFortuneApp() {
       const randomIndex = Math.floor(Math.random() * creatures.length);
       setResult(creatures[randomIndex]);
       setIsSpinning(false);
-    }, 800);
+    }, 1000);
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between p-4 sm:p-6">
+    <main className="min-h-screen bg-[#030712] text-white flex flex-col justify-between p-5 font-sans">
       <div className="w-full max-w-md mx-auto flex flex-col gap-6 my-auto">
         
         {/* ヘッダー */}
-        <div className="text-center space-y-1">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+        <div className="text-center space-y-2 mt-4">
+          <div className="inline-block px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-semibold tracking-wider uppercase mb-1">
+            Soul Gacha System
+          </div>
+          <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent drop-shadow-sm">
             前世の動物・植物占い
           </h1>
-          <p className="text-xs text-slate-400">あなたの魂のルーツを解き明かすガチャ</p>
+          <p className="text-xs text-slate-400">あなたの魂のルーツをガチャで解放せよ</p>
         </div>
 
         {/* 入力フォームカード */}
-        <div className="bg-slate-900/90 backdrop-blur-md border border-slate-800 p-5 rounded-3xl shadow-2xl flex flex-col gap-4">
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-300 ml-1">あなたの名前（またはニックネーム）</label>
+        <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-2xl flex flex-col gap-4 relative overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-300 ml-1 tracking-wide">召喚者名（あなたのお名前）</label>
             <input 
               type="text" 
               placeholder="例：ゆうき" 
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition-colors"
+              className="w-full bg-slate-950/80 border border-slate-800 rounded-2xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all shadow-inner"
             />
           </div>
+
           <button 
             onClick={drawFortune}
             disabled={isSpinning}
-            className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-emerald-900/30 active:scale-[0.98] transition-all disabled:opacity-50 text-sm tracking-wide"
+            className="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:opacity-90 text-slate-950 font-black py-4 px-6 rounded-2xl shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all disabled:opacity-50 text-sm tracking-wider uppercase"
           >
-            {isSpinning ? '魂のルーツを探索中...' : '✨ 前世を占う（ガチャを引く）'}
+            {isSpinning ? '🔮 魂の波長を同調中...' : '✨ ガチャを回す（前世を占う）'}
           </button>
         </div>
 
         {/* 結果表示カード */}
         {result && (
-          <div className={`w-full bg-gradient-to-br ${result.color} p-6 rounded-3xl shadow-2xl border border-white/10 flex flex-col gap-4`}>
-            <div className="flex justify-between items-center">
-              <span className="text-[10px] uppercase tracking-wider bg-black/40 px-3 py-1 rounded-full text-emerald-300 font-semibold border border-white/5">
+          <div className={`w-full bg-gradient-to-br ${result.color} p-6 rounded-3xl shadow-2xl shadow-black/50 border border-white/20 flex flex-col gap-5 animate-pulse-once relative overflow-hidden`}>
+            <div className="absolute top-0 right-0 transform translate-x-4 -translate-y-4 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+
+            <div className="flex justify-between items-center relative z-10">
+              <span className="text-[10px] uppercase tracking-widest bg-black/50 px-3.5 py-1.5 rounded-full text-emerald-300 font-bold border border-white/10 shadow-sm">
                 {result.type}
               </span>
-              <span className="text-xs text-slate-300">{userName}さんの前世</span>
+              <span className="text-xs text-slate-200 font-medium">{userName} さんの前世</span>
             </div>
 
-            <div className="text-center my-1 space-y-1">
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-wide drop-shadow">
+            <div className="text-center space-y-1.5 relative z-10">
+              <h2 className="text-2xl font-black text-white tracking-wide drop-shadow-md">
                 {result.name}
               </h2>
-              <p className="text-xs text-emerald-300/90 font-medium">🌿 生息地: {result.habitat}</p>
+              <p className="text-xs text-emerald-200 font-bold tracking-wide">🌿 覚醒生息地：{result.habitat}</p>
             </div>
 
-            <div className="bg-black/40 backdrop-blur-md p-4 rounded-2xl text-xs sm:text-sm text-slate-200 leading-relaxed border border-white/5">
+            <div className="bg-black/40 backdrop-blur-md p-4 rounded-2xl text-xs sm:text-sm text-slate-100 leading-relaxed border border-white/10 shadow-inner relative z-10">
               <p>{result.desc}</p>
             </div>
 
             <button 
               onClick={() => alert('Canva API連携による画像生成をここに接続します！')}
-              className="w-full bg-white hover:bg-slate-100 text-slate-950 font-bold py-3 px-4 rounded-xl shadow-md transition-colors text-xs sm:text-sm flex items-center justify-center gap-2"
+              className="w-full bg-white hover:bg-slate-100 text-slate-950 font-extrabold py-3.5 px-4 rounded-xl shadow-lg transition-all text-xs sm:text-sm flex items-center justify-center gap-2 relative z-10 active:scale-[0.98]"
             >
               <span>🎨 Canvaでカード画像を生成する</span>
             </button>
@@ -93,7 +101,7 @@ export default function CreatureFortuneApp() {
 
       </div>
 
-      <footer className="text-[10px] text-slate-600 text-center mt-6">
+      <footer className="text-[10px] text-slate-600 text-center mt-8 tracking-wider">
         Powered by Next.js & Canva Connect API
       </footer>
     </main>
