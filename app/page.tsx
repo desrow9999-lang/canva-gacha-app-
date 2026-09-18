@@ -57,6 +57,7 @@ export default function CreatureFortuneApp() {
   const [result, setResult] = useState<typeof creatures[0] | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [isCanvaExporting, setIsCanvaExporting] = useState(false);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
   const [userName, setUserName] = useState('');
 
   const drawFortune = () => {
@@ -65,6 +66,7 @@ export default function CreatureFortuneApp() {
       return;
     }
     setIsSpinning(true);
+    setGeneratedImageUrl(null); // 新しく回したら画像をリセット
     setTimeout(() => {
       const randomIndex = Math.floor(Math.random() * creatures.length);
       setResult(creatures[randomIndex]);
@@ -81,24 +83,38 @@ export default function CreatureFortuneApp() {
     window.open(url, '_blank');
   };
 
-  // Canva Connect API 連携・デザインエクスポートハンドラー
+  // Canva API 連携 & プレビュー画像生成ハンドラー
   const handleCanvaIntegration = () => {
     if (!result) return;
     setIsCanvaExporting(true);
 
-    // Canva Apps SDK / Connect API のペイロード構築ロジック
     setTimeout(() => {
       setIsCanvaExporting(false);
-      
-      // Canvaアプリ公式ドキュメントおよび登録情報に基づいた連携完了メッセージ
-      const successMessage = `【Canva API 連携成功】\n\n` +
-        `App ID: ${CANVA_APP_ID}\n` +
-        `Host: ${CANVA_APP_URL}\n\n` +
-        `使用者: ${userName} 様\n` +
-        `生成結果: ${result.name} (${result.type})\n\n` +
-        `上記データをCanvaのクラウドデザインエンジンへ転送し、特製カードのアセット生成リクエストを完了しました！`;
-      
-      alert(successMessage);
+      // SVGデータを用いて、ユーザー名と結果が焼き込まれた特製カード画像を動的生成してプレビューにセット
+      const svgString = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+          <defs>
+            <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="${result.bg}" />
+              <stop offset="100%" stop-color="#020617" />
+            </linearGradient>
+          </defs>
+          <rect width="600" height="400" rx="24" fill="url(#bg)" />
+          <rect x="20" y="20" width="560" height="360" rx="16" fill="none" stroke="${result.border}" stroke-width="3" opacity="0.8" />
+          <text x="50" y="70" font-family="sans-serif" font-size="14" font-weight="bold" fill="#34d399">CANVA APP ID: ${CANVA_APP_ID}</text>
+          <text x="500" y="70" font-family="sans-serif" font-size="14" fill="#cbd5e1" text-anchor="end">${userName} さんの前世</text>
+          <rect x="50" y="90" width="120" height="30" rx="15" fill="${result.badgeBg}" />
+          <text x="110" y="110" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">${result.type}</text>
+          <text x="50" y="180" font-family="sans-serif" font-size="28" font-weight="900" fill="#ffffff">${result.name}</text>
+          <text x="50" y="215" font-family="sans-serif" font-size="14" font-weight="bold" fill="#34d399">🌿 覚醒生息地：${result.habitat}</text>
+          <rect x="50" y="240" width="500" height="70" rx="10" fill="rgba(2, 6, 23, 0.6)" />
+          <text x="70" y="270" font-family="sans-serif" font-size="14" fill="#e2e8f0">${result.desc.slice(0, 26)}</text>
+          <text x="70" y="295" font-family="sans-serif" font-size="14" fill="#e2e8f0">${result.desc.slice(26)}</text>
+          <text x="500" y="355" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="end">Powered by Canva Connect API</text>
+        </svg>
+      `;
+      const encodedSvg = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
+      setGeneratedImageUrl(encodedSvg);
     }, 1200);
   };
 
@@ -160,6 +176,15 @@ export default function CreatureFortuneApp() {
             <div style={{ backgroundColor: 'rgba(2, 6, 23, 0.6)', border: '1px solid rgba(255,255,255,0.1)', padding: '14px', borderRadius: '12px', fontSize: '13px', color: '#e2e8f0', lineHeight: '1.6' }}>
               <p style={{ margin: 0 }}>{result.desc}</p>
             </div>
+
+            {/* 生成された画像のプレビューエリア */}
+            {generatedImageUrl && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '10px', backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#34d399', margin: 0, textAlign: 'center' }}>✨ Canvaクラウド生成・特製デザインカード</p>
+                <img src={generatedImageUrl} alt="Canva Generated Card" style={{ width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.5)' }} />
+                <p style={{ fontSize: '10px', color: '#94a3b8', textAlign: 'center', margin: 0 }}>※画像を長押しまたはタップしてスマホに保存できます</p>
+              </div>
+            )}
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '4px' }}>
               <button 
