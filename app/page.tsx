@@ -34,14 +34,14 @@ export default function CreatureFortuneApp() {
         
         {/* ヘッダー */}
         <div className="text-center space-y-1">
-          <h1 className="text-2xl sm:text-3xl font-ext500 tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-            前世の生き物・植物占い
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+            前世の動物・植物占い
           </h1>
           <p className="text-xs text-slate-400">あなたの魂のルーツを解き明かすガチャ</p>
         </div>
 
         {/* 入力フォームカード */}
-        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-800/80 p-5 rounded-3xl shadow-xl flex flex-col gap-4">
+        <div className="bg-slate-900/90 backdrop-blur-md border border-slate-800 p-5 rounded-3xl shadow-2xl flex flex-col gap-4">
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-slate-300 ml-1">あなたの名前（またはニックネーム）</label>
             <input 
@@ -63,7 +63,7 @@ export default function CreatureFortuneApp() {
 
         {/* 結果表示カード */}
         {result && (
-          <div className={`w-full bg-gradient-to-br ${result.color} p-6 rounded-3xl shadow-2xl border border-white/10 flex flex-col gap-4 animate-in fade-in duration-500`}>
+          <div className={`w-full bg-gradient-to-br ${result.color} p-6 rounded-3xl shadow-2xl border border-white/10 flex flex-col gap-4`}>
             <div className="flex justify-between items-center">
               <span className="text-[10px] uppercase tracking-wider bg-black/40 px-3 py-1 rounded-full text-emerald-300 font-semibold border border-white/5">
                 {result.type}
