@@ -5,95 +5,114 @@ import { useState } from 'react';
 const CANVA_APP_ID = 'AAHOGHJ6DXI';
 const CANVA_APP_URL = 'https://app-aahoghj6dxi.canva-apps.com';
 
-const creatures = [
-  { 
-    name: '月夜のフクロウ × シダ植物', 
-    type: '神秘タイプ', 
-    habitat: '深い霧の森の奥深く', 
-    desc: 'マイペースで直感力が鋭く、夜になると知恵が冴え渡るタイプ。', 
-    bg: '#1e1b4b', 
-    border: '#a855f7',
-    badgeBg: '#581c87',
-    icon: '🦉',
-    accentColor: '#c084fc'
-  },
-  { 
-    name: 'ひまわりを纏うカマキリ', 
-    type: '情熱タイプ', 
-    habitat: '真夏のまばゆい草原', 
-    desc: '集中力抜群で、狙った獲物（目標）を絶対に逃さないハンター気質。', 
-    bg: '#431407', 
-    border: '#f97316',
-    badgeBg: '#7c2d12',
-    icon: '🦗',
-    accentColor: '#fb923c'
-  },
-  { 
-    name: '深海のオオクラゲ × 水草', 
-    type: '癒やしタイプ', 
-    habitat: '光の届かない青い海中', 
-    desc: '周囲を穏やかな空気で包み込む。マイペースすぎてたまに心配される。', 
-    bg: '#082f49', 
-    border: '#38bdf8',
-    badgeBg: '#0369a1',
-    icon: '🪼',
-    accentColor: '#38bdf8'
-  },
-  { 
-    name: '桜の木に宿るリス', 
-    type: '春爛漫タイプ', 
-    habitat: '満開の桜並木', 
-    desc: '楽しいことが大好きで、周りの人たちに笑顔と幸せを運ぶムードメーカー。', 
-    bg: '#4c0519', 
-    border: '#f43f5e',
-    badgeBg: '#9f1239',
-    icon: '🐿️',
-    accentColor: '#fb7185'
-  },
-  { 
-    name: 'サボテンのトゲを宿すトカゲ', 
-    type: '忍耐・孤高タイプ', 
-    habitat: '灼熱の砂漠地帯', 
-    desc: '逆境にめちゃくちゃ強く、どんな困難も独自のクールな方法で乗り切る。', 
-    bg: '#022c22', 
-    border: '#10b981',
-    badgeBg: '#065f46',
-    icon: '🦎',
-    accentColor: '#34d399'
-  },
+// 膨大なパーツプール（掛け合わせで無限の組み合わせを生成）
+const adjectives = [
+  '宇宙を支配する', '二日酔いの', 'コミュ障な', '伝説の', '完全無敗の', 
+  'ポテチを愛しすぎた', '黄昏時の', '次元を歪める', '孤高の', '全米が泣いた', 
+  '寝坊常習犯の', 'マニアックな', '令和の', 'おイグラさんの', '電脳世界の'
 ];
 
-export default function CreatureFortuneApp() {
-  const [result, setResult] = useState<typeof creatures[0] | null>(null);
+const animals = [
+  { name: 'フクロウ', icon: '🦉' },
+  { name: 'カマキリ', icon: '🦗' },
+  { name: 'オオクラゲ', icon: '🪼' },
+  { name: 'リス', icon: '🐿️' },
+  { name: 'トカゲ', icon: '🦎' },
+  { name: 'ドラゴン', icon: '🐉' },
+  { name: 'アルパカ', icon: '🦙' },
+  { name: 'サメ', icon: '🦈' },
+  { name: 'ハムスター', icon: '🐹' },
+  { name: 'フェニックス', icon: '🔥' },
+  { name: 'パンダ', icon: '🐼' },
+  { name: 'ネコ', icon: '🐈' }
+];
+
+const plants = [
+  { name: 'シダ植物', habitat: '深い霧の森の奥深く' },
+  { name: 'ひまわり', habitat: '真夏のまばゆい草原' },
+  { name: '水草', habitat: '光の届かない青い海中' },
+  { name: '桜の木', habitat: '満開の桜並木' },
+  { name: 'サボテン', habitat: '灼熱の砂漠地帯' },
+  { name: '巨大キノコ', habitat: '怪しく光る地下洞窟' },
+  { name: 'クリスタル鉱石', habitat: '時空を超える水晶宮殿' },
+  { name: 'ネオン苔', habitat: 'サイバーパンクな都市の裏路地' },
+  { name: '古代蓮', habitat: '神聖なる神秘の沼地' }
+];
+
+const types = [
+  { name: '神秘タイプ', bg: '#1e1b4b', border: '#a855f7', badgeBg: '#581c87', accent: '#c084fc' },
+  { name: '情熱・カオスタイプ', bg: '#431407', border: '#f97316', badgeBg: '#7c2d12', accent: '#fb923c' },
+  { name: '癒やし・マイペースタイプ', bg: '#082f49', border: '#38bdf8', badgeBg: '#0369a1', accent: '#38bdf8' },
+  { name: '春爛漫・お祭りタイプ', bg: '#4c0519', border: '#f43f5e', badgeBg: '#9f1239', accent: '#fb7185' },
+  { name: '忍耐・孤高タイプ', bg: '#022c22', border: '#10b981', badgeBg: '#065f46', accent: '#34d399' },
+  { name: 'サイバー・次元歪みタイプ', bg: '#31043d', border: '#ec4899', badgeBg: '#831843', accent: '#f472b6' }
+];
+
+const descTemplates = [
+  '周囲の空気を完全に無視して我が道をゆく。本気を出すと地球が揺れると噂されている。',
+  '圧倒的な直感力と適当さで、どんなピンチもなぜか笑顔で乗り切ってしまう特異体質。',
+  '普段は眠そうにしているが、美味しいものの気配を察知すると超音速で覚醒するハンター。',
+  '誰にも真似できない独特なセンスを持ち、すれ違う人すべてを二度見させるオーラの持ち主。',
+  '逆境にめちゃくちゃ強く、どんな面倒なことでも「まあいっか」で粉砕する最強のメンタル。'
+];
+
+export default function InfiniteFortuneApp() {
+  const [result, setResult] = useState<{
+    title: string;
+    animal: string;
+    icon: string;
+    plant: string;
+    habitat: string;
+    typeObj: typeof types[0];
+    desc: string;
+  } | null>(null);
+  
   const [isSpinning, setIsSpinning] = useState(false);
   const [isCanvaExporting, setIsCanvaExporting] = useState(false);
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
   const [userName, setUserName] = useState('');
 
-  const drawFortune = () => {
+  const drawInfiniteFortune = () => {
     if (!userName.trim()) {
       alert('召喚者名（お名前）を入力してください！');
       return;
     }
     setIsSpinning(true);
     setGeneratedImageUrl(null);
+
     setTimeout(() => {
-      const randomIndex = Math.floor(Math.random() * creatures.length);
-      setResult(creatures[randomIndex]);
+      // 完全ランダムにパーツをマッシュアップ
+      const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+      const ani = animals[Math.floor(Math.random() * animals.length)];
+      const plt = plants[Math.floor(Math.random() * plants.length)];
+      const typ = types[Math.floor(Math.random() * types.length)];
+      const dsc = descTemplates[Math.floor(Math.random() * descTemplates.length)];
+
+      const fullName = `${adj} ${ani.name} × ${plt.name}`;
+
+      setResult({
+        title: fullName,
+        animal: ani.name,
+        icon: ani.icon,
+        plant: plt.name,
+        habitat: plt.habitat,
+        typeObj: typ,
+        desc: dsc,
+      });
       setIsSpinning(false);
-    }, 1000);
+    }, 1200);
   };
 
   const shareToX = () => {
     if (!result) return;
     const text = encodeURIComponent(
-      `【${userName}さんの前世の動物・植物占い】\n私の前世は「${result.name}」（${result.type}）でした！\n生息地：${result.habitat}\n\nあなたも魂のルーツを診断してみよう！✨\n#前世動物植物占い`
+      `【${userName}さんの無限前世占い】\n私の前世は「${result.title}」（${result.typeObj.name}）でした！\n生息地：${result.habitat}\n\nあなたも次元を超えた魂のルーツを引いてみよう！✨\n#無限前世占い #Canva`
     );
     const url = `https://twitter.com/intent/tweet?text=${text}`;
     window.open(url, '_blank');
   };
 
-  // アイコン＆イラスト付きの豪華SVGカード生成
+  // カオス＆スタイリッシュなSVGカード生成
   const handleCanvaIntegration = () => {
     if (!result) return;
     setIsCanvaExporting(true);
@@ -104,46 +123,46 @@ export default function CreatureFortuneApp() {
         <svg xmlns="http://www.w3.org/2000/svg" width="600" height="420" viewBox="0 0 600 420">
           <defs>
             <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="${result.bg}" />
+              <stop offset="0%" stop-color="${result.typeObj.bg}" />
               <stop offset="100%" stop-color="#020617" />
             </linearGradient>
             <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="8" result="blur" />
+              <feGaussianBlur stdDeviation="10" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
           </defs>
           
-          <!-- カード背景 -->
           <rect width="600" height="420" rx="28" fill="url(#cardBg)" />
-          <rect x="20" y="20" width="560" height="380" rx="20" fill="none" stroke="${result.border}" stroke-width="3" opacity="0.8" />
+          <rect x="20" y="20" width="560" height="380" rx="20" fill="none" stroke="${result.typeObj.border}" stroke-width="3" opacity="0.9" />
           
-          <!-- 上部メタ情報 -->
-          <text x="45" y="60" font-family="sans-serif" font-size="12" font-weight="bold" fill="#34d399">CANVA APP ID: ${CANVA_APP_ID}</text>
-          <text x="555" y="60" font-family="sans-serif" font-size="13" font-weight="bold" fill="#cbd5e1" text-anchor="end">${userName} さんの前世</text>
+          <!-- メタ情報 -->
+          <text x="45" y="55" font-family="sans-serif" font-size="11" font-weight="bold" fill="#34d399">CANVA APP ID: ${CANVA_APP_ID}</text>
+          <text x="555" y="55" font-family="sans-serif" font-size="12" font-weight="bold" fill="#cbd5e1" text-anchor="end">${userName} さんの前世</text>
           
           <!-- タイプバッジ -->
-          <rect x="45" y="80" width="130" height="34" rx="17" fill="${result.badgeBg}" stroke="${result.border}" stroke-width="1" />
-          <text x="110" y="102" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">${result.type}</text>
+          <rect x="45" y="72" width="160" height="30" rx="15" fill="${result.typeObj.badgeBg}" stroke="${result.typeObj.border}" stroke-width="1" />
+          <text x="125" y="92" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">${result.typeObj.name}</text>
 
-          <!-- キャラクターアイコン円形ベース -->
-          <circle cx="500" cy="140" r="45" fill="rgba(255,255,255,0.08)" stroke="${result.accentColor}" stroke-width="2" filter="url(#glow)" />
-          <text x="500" y="152" font-family="sans-serif" font-size="46" text-anchor="middle">${result.icon}</text>
+          <!-- アイコン -->
+          <circle cx="505" cy="135" r="48" fill="rgba(255,255,255,0.08)" stroke="${result.typeObj.accent}" stroke-width="2" filter="url(#glow)" />
+          <text x="505" y="148" font-family="sans-serif" font-size="50" text-anchor="middle">${result.icon}</text>
 
-          <!-- メインタイトル（生き物名） -->
-          <text x="45" y="160" font-family="sans-serif" font-size="26" font-weight="900" fill="#ffffff">${result.name}</text>
+          <!-- タイトル（折り返し対応風） -->
+          <text x="45" y="145" font-family="sans-serif" font-size="22" font-weight="900" fill="#ffffff">${result.title.slice(0, 20)}</text>
+          <text x="45" y="175" font-family="sans-serif" font-size="22" font-weight="900" fill="#ffffff">${result.title.slice(20)}</text>
           
           <!-- 生息地 -->
-          <text x="45" y="195" font-family="sans-serif" font-size="14" font-weight="bold" fill="${result.accentColor}">🌿 覚醒生息地：${result.habitat}</text>
+          <text x="45" y="205" font-family="sans-serif" font-size="13" font-weight="bold" fill="${result.typeObj.accent}">🌿 覚醒生息地：${result.habitat}</text>
 
-          <!-- 説明文枠 -->
-          <rect x="45" y="225" width="510" height="85" rx="14" fill="rgba(2, 6, 23, 0.7)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
-          <text x="70" y="260" font-family="sans-serif" font-size="14" fill="#f1f5f9">${result.desc.slice(0, 27)}</text>
-          <text x="70" y="285" font-family="sans-serif" font-size="14" fill="#f1f5f9">${result.desc.slice(27)}</text>
+          <!-- 説明枠 -->
+          <rect x="45" y="225" width="510" height="85" rx="14" fill="rgba(2, 6, 23, 0.75)" stroke="rgba(255,255,255,0.15)" stroke-width="1" />
+          <text x="65" y="258" font-family="sans-serif" font-size="13" fill="#f1f5f9">${result.desc.slice(0, 34)}</text>
+          <text x="65" y="282" font-family="sans-serif" font-size="13" fill="#f1f5f9">${result.desc.slice(34)}</text>
 
           <!-- フッター -->
-          <line x1="45" y1="340" x2="555" y2="340" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
-          <text x="45" y="375" font-family="sans-serif" font-size="12" font-weight="bold" fill="#34d399">✨ Soul Gacha &amp; Canva Connect API Integration</text>
-          <text x="555" y="375" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="end">${CANVA_APP_URL}</text>
+          <line x1="45" y1="335" x2="555" y2="335" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+          <text x="45" y="370" font-family="sans-serif" font-size="11" font-weight="bold" fill="#34d399">✨ Infinite Chaos &amp; Canva Connect API</text>
+          <text x="555" y="370" font-family="sans-serif" font-size="10" fill="#64748b" text-anchor="end">${CANVA_APP_URL}</text>
         </svg>
       `;
       const encodedSvg = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
@@ -161,9 +180,9 @@ export default function CreatureFortuneApp() {
             Canva App ID: {CANVA_APP_ID}
           </span>
           <h1 style={{ fontSize: '24px', fontWeight: '900', margin: '0 0 6px 0', letterSpacing: '-0.5px' }}>
-            前世の動物・植物占い
+            無限・前世カオス占い
           </h1>
-          <p style={{ fontSize: '12px', color: '#94a3b8', margin: 0 }}>あなたの魂のルーツをガチャで解放せよ</p>
+          <p style={{ fontSize: '12px', color: '#94a3b8', margin: 0 }}>数万通りの奇跡の組み合わせを解放せよ</p>
         </div>
 
         {/* 入力フォームカード */}
@@ -180,44 +199,44 @@ export default function CreatureFortuneApp() {
           </div>
 
           <button 
-            onClick={drawFortune}
+            onClick={drawInfiniteFortune}
             disabled={isSpinning}
-            style={{ width: '100%', backgroundColor: '#10b981', color: '#020617', fontWeight: '900', padding: '14px', borderRadius: '12px', border: 'none', cursor: 'pointer', fontSize: '14px', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)' }}
+            style={{ width: '100%', background: 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)', color: '#fff', fontWeight: '900', padding: '14px', borderRadius: '12px', border: 'none', cursor: 'pointer', fontSize: '14px', boxShadow: '0 4px 15px rgba(16, 185, 129, 0.4)' }}
           >
-            {isSpinning ? '🔮 魂の波長を同調中...' : '✨ ガチャを回す（前世を占う）'}
+            {isSpinning ? '🌀 次元を超えて召喚中...' : '🎲 無限ガチャを回す（運命の融合）'}
           </button>
         </div>
 
         {/* 結果表示カード */}
         {result && (
-          <div style={{ backgroundColor: result.bg, border: `2px solid ${result.border}`, borderRadius: '20px', padding: '22px', boxShadow: '0 20px 30px -10px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ backgroundColor: result.typeObj.bg, border: `2px solid ${result.typeObj.border}`, borderRadius: '20px', padding: '22px', boxShadow: '0 20px 30px -10px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '11px', fontWeight: 'bold', padding: '4px 12px', borderRadius: '9999px', backgroundColor: result.badgeBg, color: '#fff', border: `1px solid ${result.border}` }}>
-                {result.type}
+              <span style={{ fontSize: '11px', fontWeight: 'bold', padding: '4px 12px', borderRadius: '9999px', backgroundColor: result.typeObj.badgeBg, color: '#fff', border: `1px solid ${result.typeObj.border}` }}>
+                {result.typeObj.name}
               </span>
               <span style={{ fontSize: '12px', color: '#cbd5e1', fontWeight: '500' }}>{userName} さんの前世</span>
             </div>
 
-            <div style={{ textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '32px' }}>{result.icon}</span>
+            <div style={{ textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '38px' }}>{result.icon}</span>
               <div>
-                <h2 style={{ fontSize: '22px', fontWeight: '900', margin: '0 0 4px 0', color: '#fff', textAlign: 'left' }}>
-                  {result.name}
+                <h2 style={{ fontSize: '20px', fontWeight: '900', margin: '0 0 4px 0', color: '#fff', textAlign: 'left', lineHeight: '1.3' }}>
+                  {result.title}
                 </h2>
-                <p style={{ fontSize: '12px', color: '#34d399', fontWeight: 'bold', margin: 0, textAlign: 'left' }}>🌿 覚醒生息地：{result.habitat}</p>
+                <p style={{ fontSize: '12px', color: result.typeObj.accent, fontWeight: 'bold', margin: 0, textAlign: 'left' }}>🌿 生息地：{result.habitat}</p>
               </div>
             </div>
 
-            <div style={{ backgroundColor: 'rgba(2, 6, 23, 0.6)', border: '1px solid rgba(255,255,255,0.1)', padding: '14px', borderRadius: '12px', fontSize: '13px', color: '#e2e8f0', lineHeight: '1.6' }}>
+            <div style={{ backgroundColor: 'rgba(2, 6, 23, 0.7)', border: '1px solid rgba(255,255,255,0.1)', padding: '14px', borderRadius: '12px', fontSize: '13px', color: '#e2e8f0', lineHeight: '1.6' }}>
               <p style={{ margin: 0 }}>{result.desc}</p>
             </div>
 
-            {/* 生成されたイラスト付きプレビュー画像 */}
+            {/* 生成された無限プレビュー画像 */}
             {generatedImageUrl && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '10px', backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.2)' }}>
-                <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#34d399', margin: 0, textAlign: 'center' }}>✨ Canvaクラウド生成・特製イラストカード</p>
-                <img src={generatedImageUrl} alt="Canva Generated Card with Icon" style={{ width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.5)' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '10px', backgroundColor: 'rgba(0,0,0,0.5)', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#34d399', margin: 0, textAlign: 'center' }}>✨ Canvaクラウド生成・無限カオスカード</p>
+                <img src={generatedImageUrl} alt="Infinite Canva Generated Card" style={{ width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.5)' }} />
                 <p style={{ fontSize: '10px', color: '#94a3b8', textAlign: 'center', margin: 0 }}>※画像を長押しまたはタップしてスマホに保存できます</p>
               </div>
             )}
@@ -227,15 +246,15 @@ export default function CreatureFortuneApp() {
                 onClick={shareToX}
                 style={{ width: '100%', backgroundColor: '#000', color: '#fff', fontWeight: 'bold', padding: '12px', borderRadius: '12px', border: '1px solid #475569', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
               >
-                <span>𝕏 結果をシェアして友達に教える</span>
+                <span>𝕏 この奇跡の組み合わせをシェアする</span>
               </button>
 
               <button 
                 onClick={handleCanvaIntegration}
                 disabled={isCanvaExporting}
-                style={{ width: '100%', backgroundColor: '#6366f1', color: '#fff', fontWeight: 'bold', padding: '12px', borderRadius: '12px', border: 'none', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(99, 102, 241, 0.4)' }}
+                style={{ width: '100%', background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)', color: '#fff', fontWeight: 'bold', padding: '12px', borderRadius: '12px', border: 'none', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(99, 102, 241, 0.4)' }}
               >
-                <span>{isCanvaExporting ? '🎨 Canvaクラウドでイラスト生成中...' : '🎨 Canva公式APIでイラストカードを生成'}</span>
+                <span>{isCanvaExporting ? '🎨 Canvaクラウドでカオス生成中...' : '🎨 Canva公式APIで無限カードを生成'}</span>
               </button>
             </div>
 
@@ -245,7 +264,7 @@ export default function CreatureFortuneApp() {
       </div>
 
       <footer style={{ fontSize: '10px', color: '#64748b', textAlign: 'center', marginTop: '30px', letterSpacing: '1px' }}>
-        Powered by Next.js & Canva Connect API ({CANVA_APP_URL})
+        Powered by Next.js &amp; Canva Connect API ({CANVA_APP_URL})
       </footer>
     </div>
   );
