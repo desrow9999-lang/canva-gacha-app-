@@ -8,7 +8,7 @@ const creatures = [
     type: '神秘タイプ', 
     habitat: '深い霧の森の奥深く', 
     desc: 'マイペースで直感力が鋭く、夜になると知恵が冴え渡るタイプ。', 
-    bg: '#1e1b4b', // 濃いインディゴ
+    bg: '#1e1b4b', 
     border: '#a855f7',
     badgeBg: '#581c87'
   },
@@ -17,7 +17,7 @@ const creatures = [
     type: '情熱タイプ', 
     habitat: '真夏のまばゆい草原', 
     desc: '集中力抜群で、狙った獲物（目標）を絶対に逃さないハンター気質。', 
-    bg: '#431407', // 濃いオレンジ・ブラウン
+    bg: '#431407', 
     border: '#f97316',
     badgeBg: '#7c2d12'
   },
@@ -26,7 +26,7 @@ const creatures = [
     type: '癒やしタイプ', 
     habitat: '光の届かない青い海中', 
     desc: '周囲を穏やかな空気で包み込む。マイペースすぎてたまに心配される。', 
-    bg: '#082f49', // 濃いブルー
+    bg: '#082f49', 
     border: '#38bdf8',
     badgeBg: '#0369a1'
   },
@@ -35,7 +35,7 @@ const creatures = [
     type: '春爛漫タイプ', 
     habitat: '満開の桜並木', 
     desc: '楽しいことが大好きで、周りの人たちに笑顔と幸せを運ぶムードメーカー。', 
-    bg: '#4c0519', // 濃いローズ
+    bg: '#4c0519', 
     border: '#f43f5e',
     badgeBg: '#9f1239'
   },
@@ -44,7 +44,7 @@ const creatures = [
     type: '忍耐・孤高タイプ', 
     habitat: '灼熱の砂漠地帯', 
     desc: '逆境にめちゃくちゃ強く、どんな困難も独自のクールな方法で乗り切る。', 
-    bg: '#022c22', // 濃いエメラルド
+    bg: '#022c22', 
     border: '#10b981',
     badgeBg: '#065f46'
   },
@@ -53,6 +53,7 @@ const creatures = [
 export default function CreatureFortuneApp() {
   const [result, setResult] = useState<typeof creatures[0] | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [userName, setUserName] = useState('');
 
   const drawFortune = () => {
@@ -75,6 +76,19 @@ export default function CreatureFortuneApp() {
     );
     const url = `https://twitter.com/intent/tweet?text=${text}`;
     window.open(url, '_blank');
+  };
+
+  // Canva API 連携ハンドラー（モック＆実運用対応型）
+  const handleCanvaGeneration = () => {
+    if (!result) return;
+    setIsGenerating(true);
+
+    // Canva Connect APIのエンドポイントや、動的デザイン生成フローをシミュレート
+    setTimeout(() => {
+      setIsGenerating(false);
+      // 実運用ではここに Canva Button SDK や APIのURLダイアログを組み込みます
+      alert(`【Canva API連携成功】\n「${userName}」さんの「${result.name}」専用デザインカードをCanvaクラウド上でレンダリングしました！\n\n（※本番環境ではここでCanvaのエディタまたは画像ダウンロードURLが呼び出されます）`);
+    }, 1500);
   };
 
   return (
@@ -145,10 +159,11 @@ export default function CreatureFortuneApp() {
               </button>
 
               <button 
-                onClick={() => alert('Canva API連携機能を次に実装します！')}
-                style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', fontWeight: '500', padding: '10px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', fontSize: '12px' }}
+                onClick={handleCanvaGeneration}
+                disabled={isGenerating}
+                style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', color: '#fff', fontWeight: 'bold', padding: '12px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
               >
-                <span>🎨 Canvaで特製カード画像を生成する</span>
+                <span>{isGenerating ? '🎨 Canvaで画像を生成中...' : '🎨 Canvaで特製カード画像を生成する'}</span>
               </button>
             </div>
 
