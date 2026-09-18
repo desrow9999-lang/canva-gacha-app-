@@ -8,45 +8,45 @@ const creatures = [
     type: '神秘タイプ', 
     habitat: '深い霧の森の奥深く', 
     desc: 'マイペースで直感力が鋭く、夜になると知恵が冴え渡るタイプ。', 
-    bg: 'bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-900',
-    border: 'border-purple-500/40',
-    badge: 'bg-purple-500/20 text-purple-300 border-purple-500/30'
+    bg: '#1e1b4b', // 濃いインディゴ
+    border: '#a855f7',
+    badgeBg: '#581c87'
   },
   { 
     name: 'ひまわりを纏うカマキリ', 
     type: '情熱タイプ', 
     habitat: '真夏のまばゆい草原', 
     desc: '集中力抜群で、狙った獲物（目標）を絶対に逃さないハンター気質。', 
-    bg: 'bg-gradient-to-br from-amber-950 via-orange-950 to-slate-900',
-    border: 'border-orange-500/40',
-    badge: 'bg-orange-500/20 text-orange-300 border-orange-500/30'
+    bg: '#431407', // 濃いオレンジ・ブラウン
+    border: '#f97316',
+    badgeBg: '#7c2d12'
   },
   { 
     name: '深海のオオクラゲ × 水草', 
     type: '癒やしタイプ', 
     habitat: '光の届かない青い海中', 
     desc: '周囲を穏やかな空気で包み込む。マイペースすぎてたまに心配される。', 
-    bg: 'bg-gradient-to-br from-blue-950 via-teal-950 to-slate-900',
-    border: 'border-blue-500/40',
-    badge: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
+    bg: '#082f49', // 濃いブルー
+    border: '#38bdf8',
+    badgeBg: '#0369a1'
   },
   { 
     name: '桜の木に宿るリス', 
     type: '春爛漫タイプ', 
     habitat: '満開の桜並木', 
     desc: '楽しいことが大好きで、周りの人たちに笑顔と幸せを運ぶムードメーカー。', 
-    bg: 'bg-gradient-to-br from-rose-950 via-pink-950 to-slate-900',
-    border: 'border-pink-500/40',
-    badge: 'bg-pink-500/20 text-pink-300 border-pink-500/30'
+    bg: '#4c0519', // 濃いローズ
+    border: '#f43f5e',
+    badgeBg: '#9f1239'
   },
   { 
     name: 'サボテンのトゲを宿すトカゲ', 
     type: '忍耐・孤高タイプ', 
     habitat: '灼熱の砂漠地帯', 
     desc: '逆境にめちゃくちゃ強く、どんな困難も独自のクールな方法で乗り切る。', 
-    bg: 'bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-900',
-    border: 'border-emerald-500/40',
-    badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+    bg: '#022c22', // 濃いエメラルド
+    border: '#10b981',
+    badgeBg: '#065f46'
   },
 ];
 
@@ -65,7 +65,7 @@ export default function CreatureFortuneApp() {
       const randomIndex = Math.floor(Math.random() * creatures.length);
       setResult(creatures[randomIndex]);
       setIsSpinning(false);
-    }, 1200);
+    }, 1000);
   };
 
   const shareToX = () => {
@@ -78,37 +78,37 @@ export default function CreatureFortuneApp() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between p-4 sm:p-6 font-sans">
-      <div className="w-full max-w-md mx-auto flex flex-col gap-6 my-auto">
+    <div style={{ minHeight: '100vh', backgroundColor: '#020617', color: '#f8fafc', padding: '20px', fontFamily: 'sans-serif', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
+      <div style={{ width: '100%', maxWidth: '420px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         
         {/* ヘッダー */}
-        <div className="text-center space-y-2 pt-2">
-          <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold tracking-widest uppercase">
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <span style={{ display: 'inline-block', padding: '4px 12px', borderRadius: '9999px', backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
             Soul Gacha System
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+          <h1 style={{ fontSize: '24px', fontWeight: '900', margin: '0 0 6px 0', letterSpacing: '-0.5px' }}>
             前世の動物・植物占い
           </h1>
-          <p className="text-xs text-slate-400">あなたの魂のルーツをガチャで解放せよ</p>
+          <p style={{ fontSize: '12px', color: '#94a3b8', margin: 0 }}>あなたの魂のルーツをガチャで解放せよ</p>
         </div>
 
-        {/* 入力カード */}
-        <div className="bg-slate-900 border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4">
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-300">召喚者名（あなたのお名前）</label>
+        {/* 入力フォームカード */}
+        <div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '20px', padding: '20px', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '12px', fontWeight: 'bold', color: '#cbd5e1' }}>召喚者名（あなたのお名前）</label>
             <input 
               type="text" 
               placeholder="例：やすゆき" 
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition-colors"
+              style={{ width: '100%', backgroundColor: '#020617', border: '1px solid #334155', borderRadius: '12px', padding: '12px 14px', fontSize: '14px', color: '#fff', outline: 'none', boxSizing: 'border-box' }}
             />
           </div>
 
           <button 
             onClick={drawFortune}
             disabled={isSpinning}
-            className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-500/10 active:scale-[0.98] transition-all disabled:opacity-50 text-sm tracking-wide"
+            style={{ width: '100%', backgroundColor: '#10b981', color: '#020617', fontWeight: '900', padding: '14px', borderRadius: '12px', border: 'none', cursor: 'pointer', fontSize: '14px', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)' }}
           >
             {isSpinning ? '🔮 魂の波長を同調中...' : '✨ ガチャを回す（前世を占う）'}
           </button>
@@ -116,41 +116,37 @@ export default function CreatureFortuneApp() {
 
         {/* 結果表示カード */}
         {result && (
-          <div className={`w-full ${result.bg} border ${result.border} p-5 sm:p-6 rounded-2xl shadow-2xl space-y-4`}>
+          <div style={{ backgroundColor: result.bg, border: `2px solid ${result.border}`, borderRadius: '20px', padding: '22px', boxShadow: '0 20px 30px -10px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             
-            {/* 上部タグ＆名前 */}
-            <div className="flex justify-between items-center">
-              <span className={`text-[11px] font-bold px-3 py-1 rounded-full border ${result.badge}`}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '11px', fontWeight: 'bold', padding: '4px 12px', borderRadius: '9999px', backgroundColor: result.badgeBg, color: '#fff', border: `1px solid ${result.border}` }}>
                 {result.type}
               </span>
-              <span className="text-xs text-slate-300 font-medium">{userName} さんの前世</span>
+              <span style={{ fontSize: '12px', color: '#cbd5e1', fontWeight: '500' }}>{userName} さんの前世</span>
             </div>
 
-            {/* メインタイトル */}
-            <div className="text-center space-y-1 py-1">
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-wide">
+            <div style={{ textAlign: 'center' }}>
+              <h2 style={{ fontSize: '22px', fontWeight: '900', margin: '0 0 6px 0', color: '#fff' }}>
                 {result.name}
               </h2>
-              <p className="text-xs text-emerald-400 font-semibold">🌿 覚醒生息地：{result.habitat}</p>
+              <p style={{ fontSize: '12px', color: '#34d399', fontWeight: 'bold', margin: 0 }}>🌿 覚醒生息地：{result.habitat}</p>
             </div>
 
-            {/* 解説テキスト */}
-            <div className="bg-slate-950/60 border border-white/10 p-3.5 rounded-xl text-xs sm:text-sm text-slate-200 leading-relaxed">
-              <p>{result.desc}</p>
+            <div style={{ backgroundColor: 'rgba(2, 6, 23, 0.6)', border: '1px solid rgba(255,255,255,0.1)', padding: '14px', borderRadius: '12px', fontSize: '13px', color: '#e2e8f0', lineHeight: '1.6' }}>
+              <p style={{ margin: 0 }}>{result.desc}</p>
             </div>
 
-            {/* シェア＆アクションボタン */}
-            <div className="space-y-2 pt-2">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '4px' }}>
               <button 
                 onClick={shareToX}
-                className="w-full bg-black hover:bg-slate-900 text-white font-bold py-3 px-4 rounded-xl border border-slate-700 transition-all text-xs sm:text-sm flex items-center justify-center gap-2"
+                style={{ width: '100%', backgroundColor: '#000', color: '#fff', fontWeight: 'bold', padding: '12px', borderRadius: '12px', border: '1px solid #475569', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
               >
                 <span>𝕏 結果をシェアして友達に教える</span>
               </button>
 
               <button 
                 onClick={() => alert('Canva API連携機能を次に実装します！')}
-                className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-2.5 px-4 rounded-xl transition-all text-xs flex items-center justify-center gap-2 border border-white/5"
+                style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', fontWeight: '500', padding: '10px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', fontSize: '12px' }}
               >
                 <span>🎨 Canvaで特製カード画像を生成する</span>
               </button>
@@ -161,9 +157,9 @@ export default function CreatureFortuneApp() {
 
       </div>
 
-      <footer className="text-[10px] text-slate-500 text-center pt-8 tracking-wider">
+      <footer style={{ fontSize: '10px', color: '#64748b', textAlign: 'center', marginTop: '30px', letterSpacing: '1px' }}>
         Powered by Next.js & Canva Connect API
       </footer>
-    </main>
+    </div>
   );
 }
