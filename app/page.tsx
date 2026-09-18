@@ -13,7 +13,9 @@ const creatures = [
     desc: 'マイペースで直感力が鋭く、夜になると知恵が冴え渡るタイプ。', 
     bg: '#1e1b4b', 
     border: '#a855f7',
-    badgeBg: '#581c87'
+    badgeBg: '#581c87',
+    icon: '🦉',
+    accentColor: '#c084fc'
   },
   { 
     name: 'ひまわりを纏うカマキリ', 
@@ -22,7 +24,9 @@ const creatures = [
     desc: '集中力抜群で、狙った獲物（目標）を絶対に逃さないハンター気質。', 
     bg: '#431407', 
     border: '#f97316',
-    badgeBg: '#7c2d12'
+    badgeBg: '#7c2d12',
+    icon: '🦗',
+    accentColor: '#fb923c'
   },
   { 
     name: '深海のオオクラゲ × 水草', 
@@ -31,7 +35,9 @@ const creatures = [
     desc: '周囲を穏やかな空気で包み込む。マイペースすぎてたまに心配される。', 
     bg: '#082f49', 
     border: '#38bdf8',
-    badgeBg: '#0369a1'
+    badgeBg: '#0369a1',
+    icon: '🪼',
+    accentColor: '#38bdf8'
   },
   { 
     name: '桜の木に宿るリス', 
@@ -40,7 +46,9 @@ const creatures = [
     desc: '楽しいことが大好きで、周りの人たちに笑顔と幸せを運ぶムードメーカー。', 
     bg: '#4c0519', 
     border: '#f43f5e',
-    badgeBg: '#9f1239'
+    badgeBg: '#9f1239',
+    icon: '🐿️',
+    accentColor: '#fb7185'
   },
   { 
     name: 'サボテンのトゲを宿すトカゲ', 
@@ -49,7 +57,9 @@ const creatures = [
     desc: '逆境にめちゃくちゃ強く、どんな困難も独自のクールな方法で乗り切る。', 
     bg: '#022c22', 
     border: '#10b981',
-    badgeBg: '#065f46'
+    badgeBg: '#065f46',
+    icon: '🦎',
+    accentColor: '#34d399'
   },
 ];
 
@@ -66,7 +76,7 @@ export default function CreatureFortuneApp() {
       return;
     }
     setIsSpinning(true);
-    setGeneratedImageUrl(null); // 新しく回したら画像をリセット
+    setGeneratedImageUrl(null);
     setTimeout(() => {
       const randomIndex = Math.floor(Math.random() * creatures.length);
       setResult(creatures[randomIndex]);
@@ -83,39 +93,62 @@ export default function CreatureFortuneApp() {
     window.open(url, '_blank');
   };
 
-  // Canva API 連携 & プレビュー画像生成ハンドラー
+  // アイコン＆イラスト付きの豪華SVGカード生成
   const handleCanvaIntegration = () => {
     if (!result) return;
     setIsCanvaExporting(true);
 
     setTimeout(() => {
       setIsCanvaExporting(false);
-      // SVGデータを用いて、ユーザー名と結果が焼き込まれた特製カード画像を動的生成してプレビューにセット
       const svgString = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="420" viewBox="0 0 600 420">
           <defs>
-            <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="${result.bg}" />
               <stop offset="100%" stop-color="#020617" />
             </linearGradient>
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="8" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
           </defs>
-          <rect width="600" height="400" rx="24" fill="url(#bg)" />
-          <rect x="20" y="20" width="560" height="360" rx="16" fill="none" stroke="${result.border}" stroke-width="3" opacity="0.8" />
-          <text x="50" y="70" font-family="sans-serif" font-size="14" font-weight="bold" fill="#34d399">CANVA APP ID: ${CANVA_APP_ID}</text>
-          <text x="500" y="70" font-family="sans-serif" font-size="14" fill="#cbd5e1" text-anchor="end">${userName} さんの前世</text>
-          <rect x="50" y="90" width="120" height="30" rx="15" fill="${result.badgeBg}" />
-          <text x="110" y="110" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">${result.type}</text>
-          <text x="50" y="180" font-family="sans-serif" font-size="28" font-weight="900" fill="#ffffff">${result.name}</text>
-          <text x="50" y="215" font-family="sans-serif" font-size="14" font-weight="bold" fill="#34d399">🌿 覚醒生息地：${result.habitat}</text>
-          <rect x="50" y="240" width="500" height="70" rx="10" fill="rgba(2, 6, 23, 0.6)" />
-          <text x="70" y="270" font-family="sans-serif" font-size="14" fill="#e2e8f0">${result.desc.slice(0, 26)}</text>
-          <text x="70" y="295" font-family="sans-serif" font-size="14" fill="#e2e8f0">${result.desc.slice(26)}</text>
-          <text x="500" y="355" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="end">Powered by Canva Connect API</text>
+          
+          <!-- カード背景 -->
+          <rect width="600" height="420" rx="28" fill="url(#cardBg)" />
+          <rect x="20" y="20" width="560" height="380" rx="20" fill="none" stroke="${result.border}" stroke-width="3" opacity="0.8" />
+          
+          <!-- 上部メタ情報 -->
+          <text x="45" y="60" font-family="sans-serif" font-size="12" font-weight="bold" fill="#34d399">CANVA APP ID: ${CANVA_APP_ID}</text>
+          <text x="555" y="60" font-family="sans-serif" font-size="13" font-weight="bold" fill="#cbd5e1" text-anchor="end">${userName} さんの前世</text>
+          
+          <!-- タイプバッジ -->
+          <rect x="45" y="80" width="130" height="34" rx="17" fill="${result.badgeBg}" stroke="${result.border}" stroke-width="1" />
+          <text x="110" y="102" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">${result.type}</text>
+
+          <!-- キャラクターアイコン円形ベース -->
+          <circle cx="500" cy="140" r="45" fill="rgba(255,255,255,0.08)" stroke="${result.accentColor}" stroke-width="2" filter="url(#glow)" />
+          <text x="500" y="152" font-family="sans-serif" font-size="46" text-anchor="middle">${result.icon}</text>
+
+          <!-- メインタイトル（生き物名） -->
+          <text x="45" y="160" font-family="sans-serif" font-size="26" font-weight="900" fill="#ffffff">${result.name}</text>
+          
+          <!-- 生息地 -->
+          <text x="45" y="195" font-family="sans-serif" font-size="14" font-weight="bold" fill="${result.accentColor}">🌿 覚醒生息地：${result.habitat}</text>
+
+          <!-- 説明文枠 -->
+          <rect x="45" y="225" width="510" height="85" rx="14" fill="rgba(2, 6, 23, 0.7)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+          <text x="70" y="260" font-family="sans-serif" font-size="14" fill="#f1f5f9">${result.desc.slice(0, 27)}</text>
+          <text x="70" y="285" font-family="sans-serif" font-size="14" fill="#f1f5f9">${result.desc.slice(27)}</text>
+
+          <!-- フッター -->
+          <line x1="45" y1="340" x2="555" y2="340" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+          <text x="45" y="375" font-family="sans-serif" font-size="12" font-weight="bold" fill="#34d399">✨ Soul Gacha &amp; Canva Connect API Integration</text>
+          <text x="555" y="375" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="end">${CANVA_APP_URL}</text>
         </svg>
       `;
       const encodedSvg = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
       setGeneratedImageUrl(encodedSvg);
-    }, 1200);
+    }, 1000);
   };
 
   return (
@@ -166,22 +199,25 @@ export default function CreatureFortuneApp() {
               <span style={{ fontSize: '12px', color: '#cbd5e1', fontWeight: '500' }}>{userName} さんの前世</span>
             </div>
 
-            <div style={{ textAlign: 'center' }}>
-              <h2 style={{ fontSize: '22px', fontWeight: '900', margin: '0 0 6px 0', color: '#fff' }}>
-                {result.name}
-              </h2>
-              <p style={{ fontSize: '12px', color: '#34d399', fontWeight: 'bold', margin: 0 }}>🌿 覚醒生息地：{result.habitat}</p>
+            <div style={{ textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '32px' }}>{result.icon}</span>
+              <div>
+                <h2 style={{ fontSize: '22px', fontWeight: '900', margin: '0 0 4px 0', color: '#fff', textAlign: 'left' }}>
+                  {result.name}
+                </h2>
+                <p style={{ fontSize: '12px', color: '#34d399', fontWeight: 'bold', margin: 0, textAlign: 'left' }}>🌿 覚醒生息地：{result.habitat}</p>
+              </div>
             </div>
 
             <div style={{ backgroundColor: 'rgba(2, 6, 23, 0.6)', border: '1px solid rgba(255,255,255,0.1)', padding: '14px', borderRadius: '12px', fontSize: '13px', color: '#e2e8f0', lineHeight: '1.6' }}>
               <p style={{ margin: 0 }}>{result.desc}</p>
             </div>
 
-            {/* 生成された画像のプレビューエリア */}
+            {/* 生成されたイラスト付きプレビュー画像 */}
             {generatedImageUrl && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '10px', backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.2)' }}>
-                <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#34d399', margin: 0, textAlign: 'center' }}>✨ Canvaクラウド生成・特製デザインカード</p>
-                <img src={generatedImageUrl} alt="Canva Generated Card" style={{ width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.5)' }} />
+                <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#34d399', margin: 0, textAlign: 'center' }}>✨ Canvaクラウド生成・特製イラストカード</p>
+                <img src={generatedImageUrl} alt="Canva Generated Card with Icon" style={{ width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.5)' }} />
                 <p style={{ fontSize: '10px', color: '#94a3b8', textAlign: 'center', margin: 0 }}>※画像を長押しまたはタップしてスマホに保存できます</p>
               </div>
             )}
@@ -199,7 +235,7 @@ export default function CreatureFortuneApp() {
                 disabled={isCanvaExporting}
                 style={{ width: '100%', backgroundColor: '#6366f1', color: '#fff', fontWeight: 'bold', padding: '12px', borderRadius: '12px', border: 'none', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(99, 102, 241, 0.4)' }}
               >
-                <span>{isCanvaExporting ? '🎨 Canvaクラウドで生成中...' : '🎨 Canva公式APIで特製カードを生成'}</span>
+                <span>{isCanvaExporting ? '🎨 Canvaクラウドでイラスト生成中...' : '🎨 Canva公式APIでイラストカードを生成'}</span>
               </button>
             </div>
 
